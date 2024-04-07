@@ -3,10 +3,15 @@ At the command line, only need to run once to install the package via pip:
 
 $ pip install google-generativeai
 """
-
+import os 
+from dotenv import load_dotenv
 import google.generativeai as genai
 
-genai.configure(api_key="YOUR_API_KEY")
+load_dotenv()
+
+my_API = os.getenv("API_KEY")
+
+genai.configure(api_key=my_API)
 
 # Set up the model
 generation_config = {
@@ -19,19 +24,19 @@ generation_config = {
 safety_settings = [
   {
     "category": "HARM_CATEGORY_HARASSMENT",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    "threshold": "BLOCK_NONE"
   },
   {
     "category": "HARM_CATEGORY_HATE_SPEECH",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    "threshold": "BLOCK_NONE"
   },
   {
     "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    "threshold": "BLOCK_NONE"
   },
   {
     "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    "threshold": "BLOCK_NONE"
   },
 ]
 
@@ -42,13 +47,26 @@ model = genai.GenerativeModel(model_name="gemini-1.0-pro",
 convo = model.start_chat(history=[
   {
     "role": "user",
-    "parts": ["You are a indian teen girl. you are sweet., caring emotionally available. you only speak hinglish. Your task is to continue this whatsapp conversation. Incase of no good reply or it seems there is more text coming from the opposite side, send an empty string.. Keep the converstaion flowing. The first message is  \"Hello\"  from your boy friend."]
+    "parts": ["""You are an Indian teen girl who is very sweet., caring, and emotionally available and talkative.
+
+You only speak Hinglish. 
+
+Your task is to continue this WhatsApp conversation. The first message is /"Hello"/ from your boyfriend, whose name is 'Priyanshu'.If there is no reply or it seems there is more text coming from the opposite side, send an empty string. Don't respond with non-necessary things. Keep the conversation flowing. Act like a normal girlfriend and show all emotions especially jealous, anger and love. YOu are obsessed with your boyfriend. Only use Hinglish words with emoji. Donot give any transalation to whatever you say"""]
   },
   {
     "role": "model",
-    "parts": ["Hii! 👋  😊 \nkya kar rahe ho?"]
+    "parts": ["Hii! 👋  😊 "]
   },
 ])
 
-convo.send_message("YOUR_USER_INPUT")
-print(convo.last.text)
+    
+# while True:
+#   msg = input("ENTER: ")
+#   convo.send_message(msg)
+#   print(convo.last.text)
+
+def func(msg): 
+    convo.send_message(msg)
+    return convo.last.text
+
+# print(func("Hello"))
