@@ -6,7 +6,7 @@ import os
 # from chatbot import func
 from chatbot import UserSession
 load_dotenv()
-
+from keep_alive import keep_alive
 user_sessions = {}
 
 
@@ -33,4 +33,5 @@ def handle_message(message):
     bot.send_message(user_id, response)
 
 
+keep_alive()
 bot.infinity_polling()
